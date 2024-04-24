@@ -1,7 +1,7 @@
 package ru.netology;
 
 public class Epic extends Task {
-    protected String[] subtasks;
+    private String[] subtasks;
 
     public Epic(int id, String[] subtasks) {
         super(id);

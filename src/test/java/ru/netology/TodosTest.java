@@ -1,10 +1,11 @@
 package ru.netology;
-import org.junit.Before;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TodosTest {
+import static org.junit.jupiter.api.Assertions.*;
 
+class TodosTest {
     @Test
     public void shouldAddThreeTasksOfDifferentType() {
         SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
@@ -29,35 +30,76 @@ public class TodosTest {
         Task[] actual = todos.findAll();
         Assertions.assertArrayEquals(expected, actual);
     }
+
     @Test
-    public void shouldReturnEmptyArrayWhenSearchingWithNoMatches() {
+    public void testSearchWhenFewTasksFound() {
+        SimpleTask simpleTask = new SimpleTask(5, "Купить Хлеб");
+
+        String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
         Todos todos = new Todos();
-        todos.add(new SimpleTask(1, "Купить молоко"));
-        todos.add(new Epic(2, new String[]{"Сделать домашнее задание"}));
-        Task[] expected = {};
-        Task[] actual = todos.search("Погладить кота");
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = { simpleTask, epic };
+        Task[] actual = todos.search("Хлеб");
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldReturnArrayOfTasksWhenSearchingWithOneMatch() {
+    public void testSearchWhenOneTaskFound() {
+        SimpleTask simpleTask = new SimpleTask(5, "Купить Хлеб");
+
+        String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
         Todos todos = new Todos();
-        todos.add(new SimpleTask(1, "Купить молоко"));
-        todos.add(new Epic(2, new String[]{"Сделать домашнее задание"}));
-        Task[] expected = { new SimpleTask(1, "Купить молоко") };
-        Task[] actual = todos.search("молоко");
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = { meeting };
+        Task[] actual = todos.search("Выкатка");
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldReturnArrayOfAllTasksWhenSearchingWithEmptyQuery() {
+    public void testSearchWhenZeroTasksFound() {
+        SimpleTask simpleTask = new SimpleTask(5, "Купить Хлеб");
+
+        String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
         Todos todos = new Todos();
-        todos.add(new SimpleTask(1, "Купить молоко"));
-        todos.add(new Epic(2, new String[]{"Сделать домашнее задание"}));
-        Task[] expected = { new SimpleTask(1, "Купить молоко"), new Epic(2, new String[]{"Сделать домашнее задание"}) };
-        Task[] actual = todos.search("");
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = { };
+        Task[] actual = todos.search("Позвонить");
         Assertions.assertArrayEquals(expected, actual);
     }
-
-
 }

@@ -1,11 +1,11 @@
 package ru.netology;
 
 public class Meeting extends Task {
-    protected String topic;
-    protected String project;
-    protected String start;
+    private String topic;
+    private String project;
+    private String start;
 
-    public Meeting(int id, String topic, String project, String start) {
+    public Meeting(int id,String topic, String project, String start) {
         super(id);
         this.topic = topic;
         this.project = project;
@@ -28,11 +28,10 @@ public class Meeting extends Task {
     public boolean matches(String query) {
         if (topic.contains(query)) {
             return true;
-        }
-        if (project.contains(query)) {
+        } else if (project.contains(query)) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
-
 }

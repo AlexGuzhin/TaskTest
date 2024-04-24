@@ -67,6 +67,15 @@ class TasksTest {
         boolean actual = meeting.matches(query);
         Assertions.assertEquals(expected, actual);
     }
+    @Test
+    public void testIfNotMatchByStartMeeting() {
+        Meeting meeting = new Meeting(555,"Выкатка 3й версии приложения","Приложение НетоБанка","Во вторник после обеда");
+
+        boolean expected = false;
+        boolean actual = meeting.matches("Версия");
+
+        Assertions.assertEquals(expected, actual);
+    }
 
 
 }
