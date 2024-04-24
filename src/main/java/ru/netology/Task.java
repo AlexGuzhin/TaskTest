@@ -9,20 +9,20 @@ public class Task {
         this.id = id;
     }
 
-    public int getId() {
+     public int getId() {
         return id;
     }
 
     // Ниже находятся вспомогательные методы для корректной работы equals
     // Переопределять их в наследниках не нужно
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return id == task.id;
-    }
+  //  @Override
+  //  public boolean equals(Object o) {
+    //    if (this == o) return true;
+    //    if (o == null || getClass() != o.getClass()) return false;
+     //   Task task = (Task) o;
+     //   return id == task.id;
+   // }
 
     @Override
     public int hashCode() {
