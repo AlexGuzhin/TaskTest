@@ -8,12 +8,19 @@ public class SimpleTask extends Task {
         this.title = title; // заполнение своих полей
     }
 
+    public SimpleTask(int id) {
+        super(id);
+    }
+
     public String getTitle() {
         return title;
     }
 
     @Override
     public boolean matches(String query) {
-        return title.contains(query);
+        if (title.contains(query)) {
+            return true;
+        }
+        return false;
     }
 }

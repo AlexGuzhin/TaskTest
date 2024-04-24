@@ -3,78 +3,70 @@ package ru.netology;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class TaskTest {
+class TasksTest {
     @Test
-    public void testSimpleTaskMatches() {
-        SimpleTask task = new SimpleTask(1, "Позвонить домой");
-
-        boolean expected = true;
-        boolean actual = task.matches("Позвонить");
-
-        Assertions.assertTrue(actual);
-    }
-    @Test
-    public void testSimpleTaskNotMatches() {
-        SimpleTask task = new SimpleTask(1, "Позвонить домой");
-
-        boolean expected = true;
-        boolean actual = task.matches("Написать");
-
-        Assertions.assertFalse(actual);
-    }
-
-    @Test
-    public void testIfMatchEpic() {
-        String[] subtask = {"Молоко", "Яйца", "Хлеб"};
-        Epic epic = new Epic(5, subtask);
-
-        boolean expected = true;
-        boolean actual = epic.matches("Яйца");
-
-        Assertions.assertTrue(actual);
-    }
-
-    @Test
-    public void testIfNotMatchEpic() {
-        String[] subtask = {"Молоко", "Яйца", "Хлеб"};
-        Epic epic = new Epic(5, subtask);
-
+    public void testMatchesReturnsFalseWhenQueryNotInSubtasks() {
+        Epic epic = new Epic(1, new String[]{"Subtask 1", "Subtask 2", "Subtask 3"});
+        String query = "Subtask 4";
         boolean expected = false;
-        boolean actual = epic.matches("Попить");
-
-        Assertions.assertFalse(actual);
-    }
-
-    @Test
-    public void testIfMatchByProjectMeeting() {
-        Meeting meeting = new Meeting(555,"Выкатка 3й версии приложения","Приложение НетоБанка","Во вторник после обеда");
-
-        boolean expected = true;
-        boolean actual = meeting.matches("Выкатка");
-
+        boolean actual = epic.matches(query);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void testIfNotMatchByTopicMeeting() {
-        Meeting meeting = new Meeting(555,"Выкатка 3й версии приложения","Приложение НетоБанка","Во вторник после обеда");
-
-        boolean expected = false;
-        boolean actual = meeting.matches("Хлеб");
-
+    public void testMatchesReturnsTrueWhenQueryInSubtasks() {
+        String[] subtasks = {"Subtask 1", "Subtask 2", "Subtask 3"};
+        Epic epic = new Epic(1, subtasks);
+        String query = "Subtask 2";
+        boolean expected = true;
+        boolean actual = epic.matches(query);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void testIfNotMatchByProjectMeeting() {
-        Meeting meeting = new Meeting(555,"Выкатка 3й версии приложения","Приложение НетоБанка","Во вторник после обеда");
-
-        boolean expected = false;
-        boolean actual = meeting.matches("Версия");
-
+    public void testMatchesReturnsTrueWhenQueryInTitle() {
+        SimpleTask task = new SimpleTask(1, "Some task");
+        String query = "task";
+        boolean expected = true; // ожидаемый результат, так как строка запроса содержится в названии задачи
+        boolean actual = task.matches(query);
         Assertions.assertEquals(expected, actual);
     }
+
+    @Test
+    public void testMatchesReturnsFalseWhenQueryNotInTitle() {
+        SimpleTask task = new SimpleTask(1, "Some task");
+        String query = "other";
+        boolean expected = false; // ожидаемый результат, так как строка запроса не содержится в названии задачи
+        boolean actual = task.matches(query);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testMatchesReturnsTrueWhenQueryInTopic() {
+        Meeting meeting = new Meeting(1, "Some topic", "Some project", "2023-04-20T10:00:00Z");
+        String query = "topic";
+        boolean expected = true; // ожидаемый результат, так как строка запроса содержится в теме встречи
+        boolean actual = meeting.matches(query);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testMatchesReturnsTrueWhenQueryInProject() {
+        Meeting meeting = new Meeting(1, "Some topic", "Some project", "2023-04-20T10:00:00Z");
+        String query = "project";
+        boolean expected = true; // ожидаемый результат, так как строка запроса содержится в проекте, к которому относится встреча
+        boolean actual = meeting.matches(query);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testMatchesReturnsFalseWhenQueryNotInTopicOrProject() {
+        Meeting meeting = new Meeting(1, "Some topic", "Some project", "2023-04-20T10:00:00Z");
+        String query = "other";
+        boolean expected = false; // ожидаемый результат, так как строка запроса не содержится ни в теме встречи, ни в проекте
+        boolean actual = meeting.matches(query);
+        Assertions.assertEquals(expected, actual);
+    }
+
 
 }
